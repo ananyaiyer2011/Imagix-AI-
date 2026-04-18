@@ -1,0 +1,716 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange: #FF5C00;
+    --orange-light: #FF7A2E;
+    --blue: #1B4FFF;
+    --blue-light: #4B73FF;
+    --bg: #F7F7F5;
+    --white: #FFFFFF;
+    --grey-1: #EFEFED;
+    --grey-2: #E0E0DC;
+    --dark: #0D0D0D;
+    --mid: #555550;
+    --font-display: 'Barlow Condensed', sans-serif;
+    --font-body: 'Barlow', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    font-family: var(--font-body);
+    color: var(--dark);
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(247,247,245,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--grey-2);
+    padding: 0 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .logo {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: -0.5px;
+    color: var(--dark);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .logo-dot {
+    width: 10px; height: 10px;
+    background: var(--orange);
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .nav-links {
+    display: flex; gap: 32px; list-style: none;
+  }
+  .nav-links a {
+    font-size: 14px; font-weight: 700;
+    color: var(--mid); text-decoration: none;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--orange); }
+
+  .btn-primary {
+    background: var(--orange);
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 16px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 12px 28px;
+    border: none; border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.18s cubic-bezier(.22,.68,0,1.2), box-shadow 0.18s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0);
+    transition: background 0.18s;
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 8px 28px rgba(255,92,0,0.38);
+  }
+  .btn-primary:hover::after { background: rgba(255,255,255,0.08); }
+  .btn-primary:active { transform: translateY(0) scale(0.98); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--dark);
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 12px 28px;
+    border: 2px solid var(--dark);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s, transform 0.18s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-outline:hover { background: var(--dark); color: #fff; transform: translateY(-2px); }
+
+  /* HERO */
+  .hero {
+    padding: 72px 5% 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    max-width: 1400px; margin: 0 auto;
+  }
+  .hero-eyebrow {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .hero-eyebrow::before {
+    content: ''; width: 24px; height: 2px;
+    background: var(--orange); display: inline-block;
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(52px, 6vw, 88px);
+    line-height: 0.92;
+    letter-spacing: -1px;
+    margin-bottom: 28px;
+    color: var(--dark);
+  }
+  .hero-title em {
+    font-style: normal;
+    color: var(--blue);
+    display: block;
+  }
+  .hero-title .stroke-text {
+    -webkit-text-stroke: 2px var(--orange);
+    color: transparent;
+  }
+  .hero-sub {
+    font-size: 18px;
+    color: var(--mid);
+    max-width: 420px;
+    margin-bottom: 36px;
+    line-height: 1.6;
+  }
+  .hero-cta {
+    display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
+  }
+  .hero-cta-note {
+    font-size: 12px; color: var(--mid); font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+
+  /* GALLERY GRID */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    gap: 10px;
+    position: relative;
+  }
+  .gallery-item {
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    background: var(--grey-2);
+    animation: fadeIn 0.6s ease forwards;
+    animation-fill-mode: both;
+  }
+  .gallery-item:nth-child(1) { grid-row: span 2; animation-delay: 0.05s; }
+  .gallery-item:nth-child(2) { animation-delay: 0.12s; }
+  .gallery-item:nth-child(3) { grid-row: span 3; animation-delay: 0.18s; }
+  .gallery-item:nth-child(4) { grid-row: span 2; animation-delay: 0.25s; }
+  .gallery-item:nth-child(5) { animation-delay: 0.32s; }
+  .gallery-item:nth-child(6) { animation-delay: 0.38s; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .gallery-canvas {
+    width: 100%; height: 100%; min-height: 120px;
+    display: block;
+  }
+
+  .gallery-item::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgba(13,13,13,0.55) 100%);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .gallery-item:hover::after { opacity: 1; }
+
+  .gallery-badge {
+    position: absolute; bottom: 10px; left: 10px;
+    background: rgba(255,255,255,0.92);
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    padding: 4px 8px; border-radius: 3px;
+    color: var(--dark);
+    z-index: 2; opacity: 0;
+    transition: opacity 0.25s;
+    pointer-events: none;
+  }
+  .gallery-item:hover .gallery-badge { opacity: 1; }
+
+  /* SECTION COMMON */
+  section { padding: 80px 5%; }
+  .section-label {
+    font-family: var(--font-body); font-weight: 700;
+    font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--blue);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: var(--font-display); font-weight: 900;
+    font-size: clamp(36px, 4vw, 56px);
+    line-height: 0.95; letter-spacing: -0.5px;
+    margin-bottom: 48px; color: var(--dark);
+  }
+  .section-title span { color: var(--orange); }
+
+  /* TICKER */
+  .ticker-wrap {
+    background: var(--dark);
+    padding: 14px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .ticker-track {
+    display: inline-flex; gap: 0;
+    animation: ticker 18s linear infinite;
+  }
+  .ticker-item {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 15px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--grey-2);
+    padding: 0 32px;
+  }
+  .ticker-item .dot { color: var(--orange); margin-left: 32px; }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* BENTO GRID */
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+    gap: 12px;
+    max-width: 1400px; margin: 0 auto;
+  }
+  .bento-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 28px;
+    border: 1px solid var(--grey-2);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.22s, box-shadow 0.22s;
+  }
+  .bento-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(13,13,13,0.09);
+  }
+  .bento-card.col-7 { grid-column: span 7; }
+  .bento-card.col-5 { grid-column: span 5; }
+  .bento-card.col-4 { grid-column: span 4; }
+  .bento-card.col-8 { grid-column: span 8; }
+  .bento-card.col-6 { grid-column: span 6; }
+  .bento-card.col-12 { grid-column: span 12; }
+
+  .bento-card.orange-bg { background: var(--orange); color: white; border-color: var(--orange); }
+  .bento-card.blue-bg { background: var(--blue); color: white; border-color: var(--blue); }
+  .bento-card.dark-bg { background: var(--dark); color: white; border-color: var(--dark); }
+
+  .bento-num {
+    font-family: var(--font-display); font-weight: 900;
+    font-size: 72px; line-height: 1;
+    opacity: 0.12; position: absolute;
+    top: 12px; right: 20px;
+  }
+  .bento-icon {
+    width: 44px; height: 44px;
+    border-radius: 8px;
+    margin-bottom: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .bento-icon.orange { background: rgba(255,92,0,0.12); }
+  .bento-icon.blue { background: rgba(27,79,255,0.12); }
+  .bento-icon.light { background: rgba(255,255,255,0.15); }
+
+  .bento-card-title {
+    font-family: var(--font-display); font-weight: 900;
+    font-size: 22px; line-height: 1.1;
+    margin-bottom: 10px; color: inherit;
+  }
+  .bento-card-title.large {
+    font-size: 34px;
+  }
+  .bento-desc {
+    font-size: 14px; line-height: 1.6;
+    color: var(--mid);
+  }
+  .bento-desc.light { color: rgba(255,255,255,0.75); }
+
+  /* STAT */
+  .stat-val {
+    font-family: var(--font-display); font-weight: 900;
+    font-size: 56px; line-height: 1; color: var(--dark);
+    letter-spacing: -1px;
+  }
+  .stat-val .accent { color: var(--orange); }
+  .stat-label { font-size: 13px; color: var(--mid); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 6px; }
+
+  /* STYLES ROW */
+  .style-pills {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-top: 16px;
+  }
+  .pill {
+    font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 6px 14px; border-radius: 100px;
+    border: 1.5px solid; cursor: pointer;
+    transition: all 0.18s;
+  }
+  .pill.dark-pill { border-color: var(--dark); color: var(--dark); }
+  .pill.dark-pill:hover { background: var(--dark); color: #fff; }
+  .pill.orange-pill { border-color: rgba(255,255,255,0.4); color: rgba(255,255,255,0.9); }
+  .pill.orange-pill:hover { background: rgba(255,255,255,0.2); }
+
+  /* MINI CANVAS ARTWORKS in bento */
+  .mini-art {
+    border-radius: 8px; overflow: hidden;
+    width: 100%; height: 130px; margin-top: 18px;
+  }
+
+  /* PROMPT BOX */
+  .prompt-box {
+    background: var(--grey-1);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .prompt-cursor {
+    width: 2px; height: 18px;
+    background: var(--orange);
+    animation: blink 1s step-end infinite;
+    flex-shrink: 0;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  .prompt-text {
+    font-size: 13px; color: var(--mid);
+    font-family: monospace;
+  }
+
+  /* CTA SECTION */
+  .cta-section {
+    background: var(--dark);
+    margin: 0;
+    padding: 96px 5%;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-bg-text {
+    position: absolute;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 200px;
+    color: rgba(255,255,255,0.03);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -4px;
+  }
+  .cta-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(48px, 6vw, 88px);
+    line-height: 0.9; letter-spacing: -1px;
+    color: #fff; margin-bottom: 24px;
+    position: relative;
+  }
+  .cta-title em { font-style: normal; color: var(--orange); }
+  .cta-sub { font-size: 18px; color: rgba(255,255,255,0.55); margin-bottom: 40px; }
+
+  .btn-cta-big {
+    background: var(--orange);
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 18px 52px;
+    border: none; border-radius: 4px;
+    cursor: pointer;
+    position: relative; overflow: hidden;
+    transition: transform 0.2s cubic-bezier(.22,.68,0,1.2), box-shadow 0.2s;
+    display: inline-block; text-decoration: none;
+  }
+  .btn-cta-big:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 16px 50px rgba(255,92,0,0.5);
+  }
+  .btn-cta-big:active { transform: scale(0.97); }
+
+  /* FOOTER */
+  footer {
+    padding: 36px 5%;
+    border-top: 1px solid var(--grey-2);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-copy { font-size: 13px; color: var(--mid); }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { font-size: 13px; color: var(--mid); text-decoration: none; font-weight: 700; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--orange); }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; gap: 40px; }
+    .bento-card.col-7, .bento-card.col-5,
+    .bento-card.col-4, .bento-card.col-8,
+    .bento-card.col-6 { grid-column: span 12; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    .gallery-item:nth-child(3) { grid-row: span 2; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo"><span class="logo-dot"></span> IMAGIX</div>
+  <ul class="nav-links">
+    <li><a href="#">Gallery</a></li>
+    <li><a href="#">Features</a></li>
+    <li><a href="#">Pricing</a></li>
+    <li><a href="#">API</a></li>
+  </ul>
+  <a href="#" class="btn-primary">Get Started →</a>
+</nav>
+
+<!-- HERO -->
+<div style="max-width:1400px; margin: 0 auto;">
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">AI-Powered Image Generation</div>
+      <h1 class="hero-title">
+        CREATE<br>
+        <em>WITHOUT</em><br>
+        <span class="stroke-text">LIMITS</span>
+      </h1>
+      <p class="hero-sub">Transform your ideas into stunning visuals in seconds. Powered by cutting-edge AI that understands your creative vision.</p>
+      <div class="hero-cta">
+        <a href="#" class="btn-primary">Get Started — Free →</a>
+        <a href="#" class="btn-outline">See Gallery</a>
+      </div>
+      <p class="hero-cta-note" style="margin-top:20px;">✦ No credit card required · 50 free generations</p>
+    </div>
+
+    <!-- GALLERY GRID -->
+    <div class="gallery-grid" id="galleryGrid">
+      <!-- items injected by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="ticker">
+    <span class="ticker-item">Photorealism<span class="dot">✦</span></span>
+    <span class="ticker-item">Abstract Art<span class="dot">✦</span></span>
+    <span class="ticker-item">Anime<span class="dot">✦</span></span>
+    <span class="ticker-item">Oil Painting<span class="dot">✦</span></span>
+    <span class="ticker-item">Cyberpunk<span class="dot">✦</span></span>
+    <span class="ticker-item">Watercolor<span class="dot">✦</span></span>
+    <span class="ticker-item">3D Render<span class="dot">✦</span></span>
+    <span class="ticker-item">Sketch<span class="dot">✦</span></span>
+    <span class="ticker-item">Surrealism<span class="dot">✦</span></span>
+    <span class="ticker-item">Photorealism<span class="dot">✦</span></span>
+    <span class="ticker-item">Abstract Art<span class="dot">✦</span></span>
+    <span class="ticker-item">Anime<span class="dot">✦</span></span>
+    <span class="ticker-item">Oil Painting<span class="dot">✦</span></span>
+    <span class="ticker-item">Cyberpunk<span class="dot">✦</span></span>
+    <span class="ticker-item">Watercolor<span class="dot">✦</span></span>
+    <span class="ticker-item">3D Render<span class="dot">✦</span></span>
+    <span class="ticker-item">Sketch<span class="dot">✦</span></span>
+    <span class="ticker-item">Surrealism<span class="dot">✦</span></span>
+  </div>
+</div>
+
+<!-- BENTO FEATURES -->
+<section>
+  <div style="max-width:1400px; margin: 0 auto;">
+    <div class="section-label">Features</div>
+    <div class="section-title">Everything you need<br>to <span>create.</span></div>
+
+    <div class="bento-grid">
+
+      <!-- Big card: Prompt to Image -->
+      <div class="bento-card col-7 orange-bg">
+        <div class="bento-num">01</div>
+        <div class="bento-icon light">✏️</div>
+        <div class="bento-card-title large">Prompt-to-Image<br>in Seconds</div>
+        <p class="bento-desc light">Type anything. Our AI converts your words into breathtaking visuals with unmatched accuracy and detail.</p>
+        <div class="prompt-box" style="background: rgba(0,0,0,0.25); margin-top: 20px;">
+          <div class="prompt-cursor"></div>
+          <div class="prompt-text" style="color: rgba(255,255,255,0.7);">a fox in a neon city at dusk, cinematic...</div>
+        </div>
+        <div class="style-pills" style="margin-top:14px;">
+          <div class="pill orange-pill">Cinematic</div>
+          <div class="pill orange-pill">Detailed</div>
+          <div class="pill orange-pill">4K</div>
+          <div class="pill orange-pill">Artistic</div>
+        </div>
+      </div>
+
+      <!-- Style Presets -->
+      <div class="bento-card col-5">
+        <div class="bento-num">02</div>
+        <div class="bento-icon orange">🎨</div>
+        <div class="bento-card-title">50+ Style Presets</div>
+        <p class="bento-desc">From oil painting to neon cyberpunk — apply any aesthetic in one click.</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:18px;" id="styleSwatches"></div>
+      </div>
+
+      <!-- Stats: Speed -->
+      <div class="bento-card col-4 blue-bg">
+        <div class="bento-num">03</div>
+        <div class="stat-val" style="color:#fff;">4<span style="color:var(--orange)">s</span></div>
+        <div class="stat-label" style="color:rgba(255,255,255,0.6);">Average Generation Time</div>
+        <p class="bento-desc light" style="margin-top:12px;">Lightning-fast inference on our global GPU network.</p>
+      </div>
+
+      <!-- Stats: Images -->
+      <div class="bento-card col-4">
+        <div class="bento-num">04</div>
+        <div class="stat-val">2<span class="accent">M</span><span style="font-size:32px;">+</span></div>
+        <div class="stat-label">Images Generated Daily</div>
+        <p class="bento-desc" style="margin-top:12px;">Join a thriving community of creators worldwide.</p>
+      </div>
+
+      <!-- Upscale -->
+      <div class="bento-card col-4 dark-bg">
+        <div class="bento-num">05</div>
+        <div class="bento-icon light">🔍</div>
+        <div class="bento-card-title">4× Upscale</div>
+        <p class="bento-desc light">Super-resolution upscaling with zero quality loss. Print-ready at any size.</p>
+      </div>
+
+      <!-- API Access -->
+      <div class="bento-card col-8">
+        <div class="bento-num">06</div>
+        <div class="bento-icon blue">⚡</div>
+        <div class="bento-card-title">Powerful API Access</div>
+        <p class="bento-desc">Integrate Imagix directly into your apps, workflows, and pipelines. Full REST API with SDKs for every major language.</p>
+        <div style="background: var(--dark); border-radius:8px; padding: 16px; margin-top:18px; font-family: monospace; font-size: 13px; color: #7EE787;">
+          <span style="color:#79B8FF;">POST</span> <span style="color:#F0F6FC;">/v1/generate</span><br>
+          <span style="color:#6A737D;">{ "prompt": "sunset over tokyo", "style": "cinematic" }</span>
+        </div>
+      </div>
+
+      <!-- Commercial License -->
+      <div class="bento-card col-6">
+        <div class="bento-num">07</div>
+        <div class="bento-icon orange">✅</div>
+        <div class="bento-card-title">Full Commercial License</div>
+        <p class="bento-desc">Everything you create is yours — sell it, print it, publish it. No strings attached.</p>
+      </div>
+
+      <!-- Remix & Edit -->
+      <div class="bento-card col-6 orange-bg">
+        <div class="bento-num">08</div>
+        <div class="bento-icon light">🔄</div>
+        <div class="bento-card-title">Remix & Edit</div>
+        <p class="bento-desc light">Start from any image. Inpaint, outpaint, or restyle — keep full creative control.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- BIG CTA -->
+<div class="cta-section">
+  <div class="cta-bg-text">CREATE</div>
+  <div class="cta-title">YOUR NEXT<br><em>MASTERPIECE</em><br>IS ONE PROMPT AWAY</div>
+  <p class="cta-sub">Start free. No account needed for your first 10 images.</p>
+  <a href="#" class="btn-cta-big">Get Started — It's Free ↗</a>
+  <p style="color:rgba(255,255,255,0.25); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; margin-top:20px;">✦ Trusted by 400,000+ creators globally</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo"><span class="logo-dot"></span> IMAGIX</div>
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">API</a>
+    <a href="#">Blog</a>
+    <a href="#">Discord</a>
+  </div>
+  <div class="footer-copy">© 2026 Imagix. All rights reserved.</div>
+</footer>
+
+<script>
+// Gallery items data
+const galleryData = [
+  { label: "Photorealism", colors: ["#1a1a2e","#16213e","#0f3460","#e94560"], h: 260 },
+  { label: "Abstract", colors: ["#f7971e","#ffd200","#f7971e","#e84c00"], h: 140 },
+  { label: "Anime", colors: ["#2d1b69","#11998e","#38ef7d","#1a1a2e"], h: 380 },
+  { label: "Oil Painting", colors: ["#134e5e","#71b280","#134e5e","#71b280"], h: 220 },
+  { label: "Cyberpunk", colors: ["#0f0c29","#302b63","#24243e","#ff006e"], h: 120 },
+  { label: "3D Render", colors: ["#e0eafc","#cfdef3","#a8edea","#fed6e3"], h: 130 },
+];
+
+function drawGalleryArt(canvas, colors, h) {
+  canvas.height = h;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width = canvas.offsetWidth || 200;
+  
+  // Gradient base
+  const grd = ctx.createLinearGradient(0, 0, w, h);
+  colors.forEach((c, i) => grd.addColorStop(i / (colors.length - 1), c));
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, w, h);
+
+  // Some abstract shapes
+  ctx.globalAlpha = 0.35;
+  for (let i = 0; i < 5; i++) {
+    ctx.beginPath();
+    const x = Math.random() * w, y = Math.random() * h;
+    const r = 20 + Math.random() * 80;
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+    ctx.fill();
+  }
+
+  ctx.globalAlpha = 0.15;
+  for (let i = 0; i < 3; i++) {
+    ctx.beginPath();
+    ctx.moveTo(Math.random() * w, Math.random() * h);
+    ctx.lineTo(Math.random() * w, Math.random() * h);
+    ctx.lineTo(Math.random() * w, Math.random() * h);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+}
+
+const grid = document.getElementById('galleryGrid');
+galleryData.forEach((d, i) => {
+  const div = document.createElement('div');
+  div.className = 'gallery-item';
+  const canvas = document.createElement('canvas');
+  canvas.className = 'gallery-canvas';
+  canvas.style.height = d.h + 'px';
+  const badge = document.createElement('div');
+  badge.className = 'gallery-badge';
+  badge.textContent = d.label;
+  div.appendChild(canvas);
+  div.appendChild(badge);
+  grid.appendChild(div);
+  setTimeout(() => drawGalleryArt(canvas, d.colors, d.h), 50 + i * 60);
+});
+
+// Style swatches
+const swatchColors = [
+  { name: "Cinematic", col: "#1a1a2e", text: "#fff" },
+  { name: "Watercolor", col: "#d4f1f4", text: "#0d0d0d" },
+  { name: "Neon", col: "#0f0c29", text: "#ff006e" },
+  { name: "Sketch", col: "#f7f7f5", text: "#0d0d0d" },
+];
+const swatchCont = document.getElementById('styleSwatches');
+swatchColors.forEach(s => {
+  const el = document.createElement('div');
+  el.style.cssText = `background:${s.col}; color:${s.text}; border-radius:6px; padding:10px 12px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; border: 1px solid rgba(0,0,0,0.08); cursor:pointer; transition: transform 0.15s;`;
+  el.textContent = s.name;
+  el.onmouseover = () => el.style.transform = 'scale(1.04)';
+  el.onmouseout = () => el.style.transform = 'scale(1)';
+  swatchCont.appendChild(el);
+});
+</script>
+
+</body>
+</html>
